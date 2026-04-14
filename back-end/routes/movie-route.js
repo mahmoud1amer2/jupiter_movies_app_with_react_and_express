@@ -130,5 +130,18 @@ router.delete('/movies/:id',(req, res)=>{
     }
 })
 
+router.get('/movies/search=/:title',(req,res)=>{
+    try{
+        const title = req.params.title
+        const dataMovies = getMovies()
+        const data = dataMovies.filter(movie => movie.title === title)     
+        if(data) {  
+            res.status(200).send(data)
+        }
+     } catch(err){
+          res.status(500).send(err.message)
+    }
+})
+
 
 module.exports=router
