@@ -30,4 +30,45 @@ router.get('/movies/:id',(req,res)=>{
     }
 })
 
+
+///////////////////////////////////POST//////////////////////////////////////////
+router.post('/movies',(req,res)=>{
+    try {
+        const reqBody = req.body
+        const dataMovies = getMovies()
+        const exists = typeof reqBody.title ==="string" && typeof reqBody.description==="string" 
+                       && !isNaN(reqBody.year)
+
+          const generateId = (dataMovies) => {
+             const validId = dataMovies
+                .map(movie => Number(movie.id))
+                .filter(id => !isNaN(id))
+
+              return validId.length ? Math.max(...validId) + 1 : 1
+            }               
+
+            const duplicatedData = dataMovies.filter((obj)=>{
+                return obj.title === reqBody.title
+            })
+            
+            if(duplicatedData.length===0){
+                if(exists) {
+                    const newMovie = {
+                        id:generateId(dataMovies),
+                        ...reqBody,
+                        year: Number(reqBody.year)
+                    } 
+                    dataMovies.push(newMovie)
+                    saveMovies(dataMovies)
+                    return res.status(201).send(newMovie)   
+                }
+            }
+        return res.status(400).send("The film is found!")
+        
+    }
+    catch(err) {
+        res.status(500).send(err.message)
+    }
+})
+
 module.exports=router
