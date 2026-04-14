@@ -143,5 +143,25 @@ router.get('/movies/search=/:title',(req,res)=>{
     }
 })
 
+////////////////////////////limit////////////////////////////
 
+router.get('/movies/limit=/:num',(req,res)=>{
+
+    try{
+        const num = parseInt(req.params.num)
+        const dataMovies = getMovies()
+        const result= []
+        if(num<=0) {
+            return res.status(400).send("the num is invalid")
+        }
+        for(let movie = 0 ; movie<=num ; movie++){
+            result.push(dataMovies[movie])  
+        }
+        return res.send(result)
+    
+        }catch(err){
+          res.status(500).send(err.message)
+    }
+
+})
 module.exports=router
