@@ -63,7 +63,7 @@ router.post('/movies',(req,res)=>{
                     return res.status(201).send(newMovie)   
                 }
             }
-        return res.status(400).send("The film is found!")
+        return res.status(400).send("The film is found")
         
     }
     catch(err) {
