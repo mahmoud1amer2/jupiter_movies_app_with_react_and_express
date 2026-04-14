@@ -4,6 +4,9 @@ const app = express()
 const port = process.env.PORT || 3000
 app.use(express.json())
 app.use(cors())
+const routerMovies = require("./routes/movie-route")
+
+app.use(routerMovies)
 
 app.get('/test',(req,res)=>{
     res.send('the server is working')
