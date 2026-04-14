@@ -71,4 +71,43 @@ router.post('/movies',(req,res)=>{
     }
 })
 
+//////////////////////////////////////PATCH//////////////////////////////////////////
+router.patch('/movies/:id',(req, res)=>{
+
+    try {
+            const _id = parseInt(req.params.id)
+            const dataMovies = getMovies()
+            const reqBody = req.body
+            
+
+            const indexMovie = dataMovies.findIndex(movie => movie.id === _id)
+
+            if(indexMovie === -1) {
+                return res.status(400).send("Movie is not found!!")
+            }
+            if(!reqBody.title) {
+                return res.status(400).send("the title is required!")
+                
+            }
+            if(!reqBody.description) {
+                return res.status(400).send("the description is required!")
+                
+            } 
+            if(isNaN(reqBody.year)){
+                return res.status(400).send("the year is must number!")
+            }
+            
+            dataMovies[indexMovie] = {
+                ...dataMovies[indexMovie],
+                ...reqBody
+            }
+             saveMovies(dataMovies)
+             return res.status(200).send(dataMovies[indexMovie])
+
+        } catch (err) {
+            return res.status(500).send(err.message)
+        }
+})
+
+
 module.exports=router
