@@ -109,5 +109,26 @@ router.patch('/movies/:id',(req, res)=>{
         }
 })
 
+////////////////////////////////////////DELETE////////////////////////////////// 
+
+router.delete('/movies/:id',(req, res)=>{
+
+    try {
+            const _id = parseInt(req.params.id)
+            const dataMovies = getMovies()
+
+            const deleteMovie = dataMovies.filter((movie) => {
+                return movie.id !== _id
+            })
+
+            saveMovies(deleteMovie)
+
+            return res.status(200).send(deleteMovie)
+
+        } catch (err) {
+           return res.status(500).send(err.message)
+    }
+})
+
 
 module.exports=router
